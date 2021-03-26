@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.services.CategoryService;
 
-@RestController
+@RestController //  = Controlador REST para responder requisições neste Recurso
 @RequestMapping(value =  "/categories")
 public class CategoryResource {
 	
