@@ -1,11 +1,15 @@
 package com.devsuperior.dscatalog.entities;
 
 import java.io.Serializable;
+import java.time.Instant;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;//Especificação da JPA
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity
@@ -18,6 +22,12 @@ public class Category implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //Configuração para o ID autoincrementável
 	private Long id;
 	private String name;
+	
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")//TimeStamp sem time zone = padrão UTC(Diferente de GMT)
+	private Instant createdAt;
+	
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")//TimeStamp sem time zone = padrão UTC(Diferente de GMT)
+	private Instant updatedAt;
 	
 	public Category() {
 	}
@@ -42,6 +52,28 @@ public class Category implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+		
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	public Instant getUpdateAt() {
+		return updatedAt;
+	}
+
+	//Criado
+	@PrePersist
+	public void prePersist() {
+		createdAt = Instant.now(); 
+	}
+	
+	//Atualizado
+	@PreUpdate
+	public void preUpdate() {
+		updatedAt = Instant.now();
+	}
+	
 	//hashCode -  Implementação Padrão do Eclipse
 	@Override
 	public int hashCode() {
