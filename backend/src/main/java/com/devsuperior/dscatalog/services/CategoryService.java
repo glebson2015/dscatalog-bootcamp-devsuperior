@@ -1,14 +1,14 @@
 package com.devsuperior.dscatalog.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,13 +28,13 @@ public class CategoryService {
 	private CategoryRepository repository; //Dependencia
 	
 	@Transactional(readOnly = true) // Não bloqueia o BD apenas por fazer uma leitura // Inserido para transações de leitura
-	public List<CategoryDTO> findAll(){
+	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
 		//Lista de Categoria
-		List<Category> list =  repository.findAll();
+		Page<Category> list =  repository.findAll(pageRequest);
 		
-		
+		return list.map(x -> new CategoryDTO(x));
 		//Expressão LAMBDA - Conversão da Lista de Categoria para CategoriaDTO
-		return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
+		//return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
 		
 		//Conversão da Lista de Categoria para CategoriaDTO - A expressão a cima substitui o for abaixo
 		/*List<CategoryDTO> listDto = new ArrayList<>();		
